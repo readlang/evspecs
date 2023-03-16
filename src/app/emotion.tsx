@@ -33,8 +33,21 @@ export default function RootStyleRegistry({ children }: { children: React.ReactN
               '#F71FA7', '#FF00A1', '#E00890', '#C50E82', '#AD1374'
             ],
           },
+          primaryColor: 'brand', // example: 'blue' or 'red' or 'brand'
 
-          primaryColor: 'brand' // example: 'blue' or 'red' or 'brand'
+          components: {
+            Container: {
+              defaultProps: {
+                sizes: {
+                  xs: 540,
+                  sm: 720,
+                  md: 960,
+                  lg: 1140,
+                  xl: 1400, //1320,
+                },
+              },
+            },
+          },
 
         }} 
       >

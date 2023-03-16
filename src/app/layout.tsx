@@ -7,26 +7,11 @@ export const metadata = {
 }
 
 const links = [
-  {
-    "link": "/",
-    "label": "Home"
-  },
-  {
-    "link": "/about",
-    "label": "About"
-  },
-  {
-    "link": "/pricing",
-    "label": "Pricing"
-  },
-  {
-    "link": "/learn",
-    "label": "Learn"
-  },
-  {
-    "link": "/example",
-    "label": "Example"
-  }
+  { "link": "/",      "label": "Home" },
+  { "link": "/specs", "label": "Specs" },
+  { "link": "/about", "label": "About" },
+  { "link": "/pricing", "label": "Pricing" },
+  { "link": "/example", "label": "Example" }
 ]
 
 
