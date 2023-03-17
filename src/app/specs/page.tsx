@@ -83,12 +83,23 @@ const data = [
   }
 ]
 
+async function getData() {
+  const res = await fetch("https://carapi.app/api/models/?make=tesla&year=2020")
+  if (!res.ok) {
+    throw new Error('Failed to fetch data');
+  }
+  const data = await res.json()
+  return data
+}
 
-export default function Page() {
+
+export default async function Page() {
+  const carData = await getData();
+  
   return (
     <div>
       <h1>Specs</h1>
-      <TableSort data = {data} />
+      <TableSort data = {carData.data} />
     </div>
   );
 }
