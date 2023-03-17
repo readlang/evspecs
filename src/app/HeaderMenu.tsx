@@ -1,5 +1,6 @@
 'use client';  // appears to be necessary to load component?
 import Link from 'next/link';
+import { SwitchToggle } from './SwitchToggle';
 import { usePathname } from 'next/navigation';
 
 import { useEffect, useState } from 'react';
@@ -121,6 +122,7 @@ export function HeaderResponsive({ links }: HeaderResponsiveProps) {
         
         <Group spacing={5} className={classes.links}>
           {items}
+          <SwitchToggle/>
         </Group>
 
         <Burger opened={opened} onClick={toggle} className={classes.burger} size="sm" />

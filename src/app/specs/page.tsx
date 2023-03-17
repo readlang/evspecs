@@ -87,9 +87,8 @@ const data = [
 export default function Page() {
   return (
     <div>
-      <h1>Specs page</h1>
+      <h1>Specs</h1>
       <TableSort data = {data} />
-
     </div>
   );
 }

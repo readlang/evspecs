@@ -1,4 +1,5 @@
-import RootStyleRegistry from './emotion';
+import ContainerClient from './ContainerClient'
+import RootStyleRegistry from './emotion-mantine';
 import { HeaderResponsive } from './HeaderMenu';
 
 export const metadata = {
@@ -6,6 +7,7 @@ export const metadata = {
   description: 'Amazing Resource',
 }
 
+// header links and lables:
 const links = [
   { "link": "/",      "label": "Home" },
   { "link": "/specs", "label": "Specs" },
@@ -14,7 +16,6 @@ const links = [
   { "link": "/example", "label": "Example" }
 ]
 
-
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en-US">
@@ -22,7 +23,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <RootStyleRegistry>
           <HeaderResponsive links = {links} />
-          {children}
+          <ContainerClient size="xl">
+            {children}
+          </ContainerClient>
         </RootStyleRegistry>
       </body>
     </html>
