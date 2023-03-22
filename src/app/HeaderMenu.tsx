@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation';
 
 import { useEffect, useState } from 'react';
 import {
+  Title,
   createStyles,
   Header,
   Container,
@@ -118,7 +119,10 @@ export function HeaderResponsive({ links }: HeaderResponsiveProps) {
   return (
     <Header height={HEADER_HEIGHT} mb={120} className={classes.root}>
       <Container className={classes.header}>
-        <Link href='/'> <MantineLogo size={28} /> </Link> 
+        <Link href='/'> 
+          <Title color="teal.4" underline={true} >EV Specs</Title>
+          {/*  <MantineLogo size={28} />  */} 
+        </Link> 
         
         <Group spacing={5} className={classes.links}>
           {items}
