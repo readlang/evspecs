@@ -16,6 +16,7 @@ import {
 import { keys } from '@mantine/utils';
 import { IconSelector, IconChevronDown, IconChevronUp, IconSearch } from '@tabler/icons-react';
 
+// defines the style properties in Mantine
 const useStyles = createStyles((theme) => ({
   th: {
     padding: '0 !important',
@@ -37,17 +38,18 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
+// defines the row data & data types
 interface RowData {
   brand: string;
   model: string;
-  id: string;   // this is a number?
+  id: number;   
   trim: string;
   desc: string;
-  msrp: string;   // this is a number?
-  // drive_type: string;
-  // engine: string;
+  msrp: number; 
+  drive_type: string;
+  engine: string;
   // fuel: string;
-  // HP: number;
+  hp: number;
 }
 
 interface TableSortProps {
@@ -61,6 +63,7 @@ interface ThProps {
   onSort(): void;
 }
 
+// Table Header Component
 function Th({ children, reversed, sorted, onSort }: ThProps) {
   const { classes } = useStyles();
   const Icon = sorted ? (reversed ? IconChevronUp : IconChevronDown) : IconSelector;
@@ -80,30 +83,43 @@ function Th({ children, reversed, sorted, onSort }: ThProps) {
   );
 }
 
+// filters the table data based on the search text input field
 function filterData(data: RowData[], search: string) {
   const query = search.toLowerCase().trim();
   return data.filter((item) =>
-    keys( data[0]).some((key) => item[key].toLowerCase().includes(query))  // crashes on search filter!
+    keys( data[0]).some((key) => item[key].toString().toLowerCase().includes(query))  // converts toString first to prevent crash on number columns
   );
 }
 
+// sorts the table data based on the column header sort arrows (and also calls the filter function)
 function sortData(
   data: RowData[],
   payload: { sortBy: keyof RowData | null; reversed: boolean; search: string }
 ) {
   const { sortBy } = payload;
 
+  // if the sort arrows haven't been touched
   if (!sortBy) {
     return filterData(data, payload.search);
   }
 
+  // if the sort arrows are activated
   return filterData(
     [...data].sort((a, b) => {
-      if (payload.reversed) {
-        return b[sortBy].localeCompare(a[sortBy]);  // crashes on sort number
-      }
 
-      return a[sortBy].localeCompare(b[sortBy]);  // crashes on sort number
+      if (payload.reversed) {
+        console.log( typeof a[sortBy] )
+        // Was getting error here, not sure if localeCompare is necessary
+        // if (typeof b[sortBy] === "string" ) return b[sortBy].localeCompare(a[sortBy]);  
+        // else 
+        return ( a[sortBy] > b[sortBy] ? -1 : 1)
+      } else {
+        console.log( typeof a[sortBy] )
+        // Was getting error here, not sure if localeCompare is necessary
+        // if (typeof a[sortBy] === "string" ) return a[sortBy].localeCompare(b[sortBy]);  
+        // else 
+        return ( a[sortBy] > b[sortBy] ? 1 : -1)
+      }
     }),
     payload.search
   );
@@ -136,6 +152,10 @@ export function TableSort({ data }: TableSortProps) {
       <td>{row.trim}</td>
       <td>{row.desc}</td>
       <td>{row.msrp}</td>
+      <td>{row.drive_type}</td>
+      <td>{row.engine}</td>
+      {/* <td>{row.fuel}</td> */}
+      <td>{row.hp}</td>
     </tr>
   ));
 
@@ -173,7 +193,7 @@ export function TableSort({ data }: TableSortProps) {
               reversed={reverseSortDirection}
               onSort={() => setSorting('id')}
             >
-              ID number
+              ID.
             </Th>
 
             <Th
@@ -198,6 +218,38 @@ export function TableSort({ data }: TableSortProps) {
               onSort={() => setSorting('msrp')}
             >
               MSRP
+            </Th>
+
+            <Th
+              sorted={sortBy === 'drive_type'}
+              reversed={reverseSortDirection}
+              onSort={() => setSorting('drive_type')}
+            >
+              Drive Type
+            </Th>
+
+            <Th
+              sorted={sortBy === 'engine'}
+              reversed={reverseSortDirection}
+              onSort={() => setSorting('engine')}
+            >
+              Motor
+            </Th>
+
+            {/* <Th
+              sorted={sortBy === 'fuel'}
+              reversed={reverseSortDirection}
+              onSort={() => setSorting('fuel')}
+            >
+              Power
+            </Th> */}
+
+            <Th
+              sorted={sortBy === 'hp'}
+              reversed={reverseSortDirection}
+              onSort={() => setSorting('hp')}
+            >
+              Horsepower
             </Th>
 
           </tr>
