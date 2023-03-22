@@ -1,4 +1,4 @@
-import { TableSort } from './Table';
+
 
 async function getData() {
   const res = await fetch("https://carapi.app/api/engines/?year=2020&verbose=yes&engine_type=electric&fuel_type=electric")
@@ -8,10 +8,11 @@ async function getData() {
   }
 
   const {data} = await res.json()
+  console.log(data)
   return data
 }
 
-async function cleanData(rawData: Array<any> ) {
+async function cleanData(rawData ) {
   const cleanData = []
 
   for (const element of rawData) {
@@ -37,31 +38,32 @@ async function cleanData(rawData: Array<any> ) {
     cleanData.push({ 
       brand: make_name, 
       model: model_name, 
-      id: id.toString(), // id converted to string
+      id: id, 
       trim: trim_name,
       desc: description,
-      msrp: msrp.toString(), // msrp converted to string
-      // drive_type: drive_type,
-      // engine: engine_type,
-      // fuel: fuel_type, 
-      // HP: horsepower_hp, 
+      msrp: msrp,
+      drive_type: drive_type,
+      engine: engine_type,
+      fuel: fuel_type, 
+      HP: horsepower_hp, 
     })
   }
-
   return cleanData
 }
 
-export default async function Page() {
+//export default 
+async function Page() {
   const rawCarData = await getData();
-  const cleanCarData = await cleanData(rawCarData)
 
-  console.log(cleanCarData)
+  cleanData(rawCarData).then(data => console.log(data))
+
   
-  return (
-    <div>
-      <h1>Specs</h1>
-      <h4>{cleanCarData.length} unique models returned</h4>
-      <TableSort data = {cleanCarData} />
-    </div>
-  );
+  // return (
+  //   <div>
+  //     <h1>Specs</h1>
+  //     {/* <TableSort data = {rawCarData.data} /> */}
+  //   </div>
+  // );
 }
+
+Page()

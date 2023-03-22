@@ -38,9 +38,16 @@ const useStyles = createStyles((theme) => ({
 }));
 
 interface RowData {
-  name: string;
-  id: string;
-  make_id: string;
+  brand: string;
+  model: string;
+  id: string;   // this is a number?
+  trim: string;
+  desc: string;
+  msrp: string;   // this is a number?
+  // drive_type: string;
+  // engine: string;
+  // fuel: string;
+  // HP: number;
 }
 
 interface TableSortProps {
@@ -76,7 +83,7 @@ function Th({ children, reversed, sorted, onSort }: ThProps) {
 function filterData(data: RowData[], search: string) {
   const query = search.toLowerCase().trim();
   return data.filter((item) =>
-    keys(data[0]).some((key) => item[key].toLowerCase().includes(query))
+    keys( data[0]).some((key) => item[key].toLowerCase().includes(query))  // crashes on search filter!
   );
 }
 
@@ -93,10 +100,10 @@ function sortData(
   return filterData(
     [...data].sort((a, b) => {
       if (payload.reversed) {
-        return b[sortBy].localeCompare(a[sortBy]);
+        return b[sortBy].localeCompare(a[sortBy]);  // crashes on sort number
       }
 
-      return a[sortBy].localeCompare(b[sortBy]);
+      return a[sortBy].localeCompare(b[sortBy]);  // crashes on sort number
     }),
     payload.search
   );
@@ -122,10 +129,13 @@ export function TableSort({ data }: TableSortProps) {
   };
 
   const rows = sortedData.map((row) => (
-    <tr key={row.name}>
-      <td>{row.name}</td>
+    <tr key={row.id}>
+      <td>{row.brand}</td>
+      <td>{row.model}</td>
       <td>{row.id}</td>
-      <td>{row.make_id}</td>
+      <td>{row.trim}</td>
+      <td>{row.desc}</td>
+      <td>{row.msrp}</td>
     </tr>
   ));
 
@@ -143,26 +153,53 @@ export function TableSort({ data }: TableSortProps) {
         <thead>
           <tr>
             <Th
-              sorted={sortBy === 'name'}
+              sorted={sortBy === 'brand'}
               reversed={reverseSortDirection}
-              onSort={() => setSorting('name')}
+              onSort={() => setSorting('brand')}
             >
-              Name
+              Brand
             </Th>
+
+            <Th
+              sorted={sortBy === 'model'}
+              reversed={reverseSortDirection}
+              onSort={() => setSorting('model')}
+            >
+              Model
+            </Th>
+
             <Th
               sorted={sortBy === 'id'}
               reversed={reverseSortDirection}
               onSort={() => setSorting('id')}
             >
-              ID
+              ID number
             </Th>
+
             <Th
-              sorted={sortBy === 'make_id'}
+              sorted={sortBy === 'trim'}
               reversed={reverseSortDirection}
-              onSort={() => setSorting('make_id')}
+              onSort={() => setSorting('trim')}
             >
-              Make Id
+              Trim Level
             </Th>
+
+            <Th
+              sorted={sortBy === 'desc'}
+              reversed={reverseSortDirection}
+              onSort={() => setSorting('desc')}
+            >
+              Description
+            </Th>
+
+            <Th
+              sorted={sortBy === 'msrp'}
+              reversed={reverseSortDirection}
+              onSort={() => setSorting('msrp')}
+            >
+              MSRP
+            </Th>
+
           </tr>
         </thead>
         <tbody>
