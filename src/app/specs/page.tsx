@@ -1,4 +1,5 @@
 import { TableSort } from './Table';
+import { FilterArea } from './FilterArea';
 
 async function getData() {
   const res = await fetch("https://carapi.app/api/engines/?year=2020&verbose=yes&engine_type=electric&fuel_type=electric")
@@ -60,6 +61,7 @@ export default async function Page() {
   return (
     <div>
       <h1>Specs</h1>
+      <FilterArea />
       <h4>{cleanCarData.length} unique model-trims returned</h4>
       <TableSort data = {cleanCarData} />
     </div>
