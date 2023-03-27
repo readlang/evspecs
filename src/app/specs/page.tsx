@@ -1,5 +1,5 @@
 import { TableSort } from './Table';
-import { FilterArea } from './FilterArea';
+import { FilterArea } from './filterComponents/FilterArea';
 
 async function getData() {
   const res = await fetch("https://carapi.app/api/engines/?year=2020&verbose=yes&engine_type=electric&fuel_type=electric")
