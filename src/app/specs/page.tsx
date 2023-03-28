@@ -1,6 +1,8 @@
 import { TableSort } from './Table';
 import { FilterArea } from './filterComponents/FilterArea';
+import Container from './Container';
 
+// fetches data - needs to be done server side
 async function getData() {
   const res = await fetch("https://carapi.app/api/engines/?year=2020&verbose=yes&engine_type=electric&fuel_type=electric")
   if (!res.ok) {
@@ -48,7 +50,6 @@ async function cleanData(rawData: Array<any> ) {
       hp: horsepower_hp, 
     })
   }
-
   return cleanData
 }
 
@@ -56,14 +57,16 @@ export default async function Page() {
   const rawCarData = await getData();
   const cleanCarData = await cleanData(rawCarData)
 
-  console.log(cleanCarData)
+  // console.log(cleanCarData)
   
   return (
     <div>
       <h1>Specs</h1>
-      <FilterArea />
+
+      <Container cleanCarData = {cleanCarData} />
+      {/* <FilterArea />
       <h4>{cleanCarData.length} unique model-trims returned</h4>
-      <TableSort data = {cleanCarData} />
+      <TableSort data = {cleanCarData} /> */}
     </div>
   );
 }

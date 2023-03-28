@@ -6,8 +6,6 @@ import { Checkbox, Space } from '@mantine/core';
 export function FilterSize() {
   const [value, setValue] = useState<string[]>(["Compact", "Medium", "Large", "XLarge"]);
 
-  console.log(value)
-
     return (
         <Checkbox.Group 
             value={value}

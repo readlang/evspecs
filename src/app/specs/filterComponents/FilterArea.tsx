@@ -1,5 +1,7 @@
 'use client'
+import { ContextStore } from '../Container';
 
+import { useContext } from 'react';
 import { Button, Text, Collapse, SimpleGrid, Space, Paper } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { FilterPrice } from './FilterPrice';
@@ -8,6 +10,10 @@ import { FilterSize } from './FilterSize';
 
 export function FilterArea() {
   const [opened, { toggle }] = useDisclosure(false);
+
+  const contextObj = useContext(ContextStore);
+
+  console.log(contextObj)
 
   return (
     <div>
@@ -18,6 +24,7 @@ export function FilterArea() {
             <FilterPrice />
             <FilterRange />
             <FilterSize />
+            <Button onClick={()=> contextObj.setTheme(contextObj.theme === "light" ? "dark" : "light") }>set theme</Button>
           </SimpleGrid>
         </Paper>
       </Collapse>
