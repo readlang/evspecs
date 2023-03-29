@@ -125,17 +125,11 @@ function sortData(
   );
 }
 
-
-
 export function TableSort({ data }: TableSortProps) {
   const [search, setSearch] = useState('');
   const [sortedData, setSortedData] = useState(data);
   const [sortBy, setSortBy] = useState<keyof RowData | null>(null);
   const [reverseSortDirection, setReverseSortDirection] = useState(false);
-
-  console.log("Table Component data input: ", data.length)
-
-  useEffect(() => {setSortedData(data)}, [data])
 
   // this handles a change to the sorting up/down arrows
   const setSorting = (field: keyof RowData) => {
@@ -146,13 +140,14 @@ export function TableSort({ data }: TableSortProps) {
   };
 
   // this handles a change to the search text input box
-  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(event.currentTarget.value)
-    const { value } = event.currentTarget;
-    setSearch(value);
-    setSortedData(sortData(data, { sortBy, reversed: reverseSortDirection, search: value }));
+  const handleSearchChange = () => {      
+    setSortedData(sortData(data, { sortBy, reversed: reverseSortDirection, search: search }));
   };
 
+  // this calls handleSearchChange when the search term OR incoming data changes (as in filter applied upstream)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => {handleSearchChange()}, [search, data]);
+  
   const rows = sortedData.map((row) => (
     <tr key={row.id}>
       <td>{row.brand}</td>
@@ -167,10 +162,6 @@ export function TableSort({ data }: TableSortProps) {
     </tr>
   ));
 
-  // this does not update becuase 
-  //console.log("rows data #: ", rows.length)
-  console.log("sortedData Output #: ", sortedData.length)
-
   return (
     <Container size="xl">
     <ScrollArea h={800}>
@@ -179,7 +170,7 @@ export function TableSort({ data }: TableSortProps) {
         mb="md"
         icon={<IconSearch size="0.9rem" stroke={1.5} />}
         value={search}
-        onChange={handleSearchChange}
+        onChange={event => setSearch(event.target.value) }
       />
       <Table horizontalSpacing="md" verticalSpacing="xs" miw={700} sx={{ tableLayout: 'fixed' }}>
         <thead>
