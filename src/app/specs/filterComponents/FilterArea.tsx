@@ -13,8 +13,6 @@ export function FilterArea() {
 
   const contextObj = useContext(ContextStore);
 
-  console.log(contextObj)
-
   return (
     <div>
       <Button onClick={toggle}>Filter expand / collapse</Button> <Space h="xs" />

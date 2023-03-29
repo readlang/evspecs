@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   createStyles,
   Table,
@@ -125,12 +125,19 @@ function sortData(
   );
 }
 
+
+
 export function TableSort({ data }: TableSortProps) {
   const [search, setSearch] = useState('');
   const [sortedData, setSortedData] = useState(data);
   const [sortBy, setSortBy] = useState<keyof RowData | null>(null);
   const [reverseSortDirection, setReverseSortDirection] = useState(false);
 
+  console.log("Table Component data input: ", data.length)
+
+  useEffect(() => {setSortedData(data)}, [data])
+
+  // this handles a change to the sorting up/down arrows
   const setSorting = (field: keyof RowData) => {
     const reversed = field === sortBy ? !reverseSortDirection : false;
     setReverseSortDirection(reversed);
@@ -138,7 +145,9 @@ export function TableSort({ data }: TableSortProps) {
     setSortedData(sortData(data, { sortBy: field, reversed, search }));
   };
 
+  // this handles a change to the search text input box
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    console.log(event.currentTarget.value)
     const { value } = event.currentTarget;
     setSearch(value);
     setSortedData(sortData(data, { sortBy, reversed: reverseSortDirection, search: value }));
@@ -154,14 +163,17 @@ export function TableSort({ data }: TableSortProps) {
       <td>{row.msrp}</td>
       <td>{row.drive_type}</td>
       <td>{row.engine}</td>
-      {/* <td>{row.fuel}</td> */}
       <td>{row.hp}</td>
     </tr>
   ));
 
+  // this does not update becuase 
+  //console.log("rows data #: ", rows.length)
+  console.log("sortedData Output #: ", sortedData.length)
+
   return (
     <Container size="xl">
-    <ScrollArea>
+    <ScrollArea h={800}>
       <TextInput
         placeholder="Search by any field"
         mb="md"
@@ -235,14 +247,6 @@ export function TableSort({ data }: TableSortProps) {
             >
               Motor
             </Th>
-
-            {/* <Th
-              sorted={sortBy === 'fuel'}
-              reversed={reverseSortDirection}
-              onSort={() => setSorting('fuel')}
-            >
-              Power
-            </Th> */}
 
             <Th
               sorted={sortBy === 'hp'}
